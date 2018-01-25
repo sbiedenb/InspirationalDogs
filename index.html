@@ -1,11 +1,11 @@
 <html>
 
   <head>
-    <title> Something </title>
+    <title> Inspirational Dogs </title>
     <style>
       #title{
-       color: red;
-        background-color:yellow;
+       color: white;
+        background-color:black;
         margin-left:50px;
         margin-right:50px;
         text-align:center;
@@ -15,32 +15,36 @@
   </head>
   
   <body>
-    <h3 id="title"> Something Something </h3>
-    <p>This is so much fun yay!</p>
+    <h3 id="title"> Create an Inspirational Dog Poster! </h3>
+    <button type="button" id="createPoster">Create a New Poster</button>
+    
+    <p id="quoteTitle"></p>
+    <p id="quoteContent"></p>
+    <p id="quoteSource"></p>
     
     <hr/>
-    
-    My favorite stuff:
-    <ol>
-      <li>Stuff</li>
-      <li>Things</li>
-      <li>Stuff and Things</li>
-      <li>Stuff and Things 2</li>
-    </ol>
-    
-    Other things about Stuff:
-    <ul>
-      <li>What<li>
-      <li>Are<li>
-      <li>We<li>
-      <li>Doing<li>
-    </ul>
-    
-    <blockquote>
-    <p> Welcome ot this web app. This is a simple web app that I will use to illustrate basic html, css, js, etc <p>
-    </blockquote>
       
-    <img src="http://lorempixel.com/600/600/" alt="Picture of something"/>
   </body>
+  
+  $('#createPoster').on('click', function(e) {
+    e.preventDefault();
+    $.ajax( {
+      url: '/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
+      success: function(data) {
+        var post = data.shift(); // The data is an array of posts. Grab the first one.
+        $('#quoteTitle').text(post.title);
+        $('#quoteContent').html(post.content);
+
+        // If the Source is available, use it. Otherwise hide it.
+        if (typeof post.custom_meta !== 'undefined' && typeof post.custom_meta.Source !== 'undefined') {
+          $('#quoteSource').html('Source:' + post.custom_meta.Source);
+        } else {
+          $('#quoteSource').text('');
+        }
+      },
+      cache: false
+    });
+  });
+});
 
 </html>
