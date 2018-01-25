@@ -34,7 +34,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script>
    			function getDogs(){
-                $.getJSON( "https://dog.ceo/dog-api/api/breeds/image/random", function( result ) {
+                $.getJSON( "https://dog.ceo/api/breeds/image/random", function( result ) {
                     $("#dogPic").html("<img src='" + result.message + "'>");
                 });
             }
