@@ -2,6 +2,7 @@
 
   <head>
     <title> Inspirational Dogs </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <style>
       #title{
        color: white;
@@ -15,20 +16,37 @@
   
   <body>
     <h3 id="title"> Create an Inspirational Dog Poster! </h3>
-    <button type="button" id="createPoster">Create a New Poster</button>
+    <button type="button" class="createPoster">Create a New Poster</button>
     
-    <p id="quoteTitle"></p>
-    <p id="quoteContent"></p>
-    <p id="quoteSource"></p>
+    <p class="quoteTitle"></p>
+    <p class="quoteContent"></p>
+    <p class="quoteSource"></p>
     
     <hr/>
    
   </body>
   
   <script>
-  $.getJSON("https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&callback=", function(a) {
-    $("body").append(a[0].content + "<p>&mdash; " + a[0].title + "</p>")
+$('#createPoster').on('click', function(e) {
+    e.preventDefault();
+    $.ajax( {
+      url: '/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
+      success: function(data) {
+        var post = data.shift(); // The data is an array of posts. Grab the first one.
+        $('#quoteTitle').text(post.title);
+        $('#quoteContent').html(post.content);
+
+        // If the Source is available, use it. Otherwise hide it.
+        if (typeof post.custom_meta !== 'undefined' && typeof post.custom_meta.Source !== 'undefined') {
+          $('#quoteSource').html('Source:' + post.custom_meta.Source);
+        } else {
+          $('#quoteSource').text('');
+        }
+      },
+      cache: false
+    });
   });
+});
   </script>
 
 </html>
