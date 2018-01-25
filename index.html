@@ -49,8 +49,8 @@
   $( '#createPoster' ).click(function ( e ) {
     e.preventDefault();
   $.getJSON("http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1", function(a) {
-    ver post = a.shift();
-    $("#quote").html(post.content + "<p>-" + post.title + "</p>")
+    var trigger = Math.random() * (100 - 1) + 1;
+    $("#quote").html(a[Math.floor(Math.random() * 20);].content + "<p>-" + a[Math.floor(Math.random() * 20);].title + "</p>")
   });
   } );
   </script>
